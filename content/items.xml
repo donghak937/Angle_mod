@@ -1,6 +1,6 @@
 <items gfxroot = "gfx/items/" version = "1">
   <passive 
-  id = "1" 
+  id = "800" 
   name = "Ollo Head" 
   gfx="Ollohead.png" 
   description="Homing Shot + Shot Speed Up" 
