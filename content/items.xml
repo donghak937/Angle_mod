@@ -3,8 +3,16 @@
   id = "800" 
   name = "Ollo Head" 
   gfx="Ollohead.png" 
-  description="Homing Shot + Shot Speed Up" 
+  description="I don't feel so good." 
   quality="3" 
+  cache = "damage"/>
+
+  <passive 
+  id = "801" 
+  name = "Ollo Suit" 
+  gfx="Ollosuit.png" 
+  description="Temporate power!" 
+  quality="1" 
   cache = "damage"/>
 </items>
 

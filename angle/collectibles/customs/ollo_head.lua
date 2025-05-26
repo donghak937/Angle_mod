@@ -1,14 +1,12 @@
-local function register(mod, id)
+return function(mod, id)
+    -- 아이템 효과 등록
     function mod:OlloHeadCache(player, cacheFlag)
         if player:HasCollectible(id) then
-            print("OlloHead 콜백 진입!", id, cacheFlag)
             if cacheFlag == CacheFlag.CACHE_SHOTSPEED then
                 player.ShotSpeed = player.ShotSpeed + 0.7
-                print("눈물속도 +0.7!")
             end
             if cacheFlag == CacheFlag.CACHE_TEARFLAG then
                 player.TearFlags = player.TearFlags | TearFlags.TEAR_HOMING
-                print("유도효과 추가!")
             end
         end
     end
@@ -18,10 +16,16 @@ local function register(mod, id)
         if player:HasCollectible(id) then
             player:AddCacheFlags(CacheFlag.CACHE_SHOTSPEED | CacheFlag.CACHE_TEARFLAG)
             player:EvaluateItems()
-            print("캐시 강제갱신!")
         end
     end
     mod:AddCallback(ModCallbacks.MC_POST_PEFFECT_UPDATE, mod.OlloHeadCacheRefresh)
-end
 
-return register
+    -- EID 설명 등록 (여기서 관리!)
+    if EID then
+        EID:addCollectible(
+            id,
+            "눈물 속도 +0.7#유도 눈물(Homing Tears)",
+            "Ollo Head"
+        )
+    end
+end

@@ -1,9 +1,11 @@
-local mod = RegisterMod("My Mod", 1)
+angle = RegisterMod("angle", 1)
+local mod = angle
 
-local ids = {
+angle.Items = {
     ollo_head = Isaac.GetItemIdByName("Ollo Head"),
-    -- 필요시 다른 아이템 id도 같이!
+    ollo_suit = Isaac.GetItemIdByName("Ollo Suit"),
+    -- 다른 아이템도 여기에 추가!
 }
 
 local register_collectibles = require("angle.collectibles.init")
-register_collectibles(mod, ids)
+register_collectibles(mod, angle.Items)
