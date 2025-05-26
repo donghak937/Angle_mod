@@ -24,7 +24,8 @@ return function(mod, id)
     if EID then
         EID:addCollectible(
             id,
-            "눈물 속도 +0.7#유도 눈물(Homing Tears)",
+            "#↑ 눈물 속도 +0.7가 증가합니다."..
+            "#{{Collectible3}} 유도 눈물을 발사합니다.",
             "Ollo Head"
         )
     end

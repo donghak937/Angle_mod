@@ -26,17 +26,17 @@ return function(mod, id)
             if data[SUIT_STATE_KEY] == "boost" then
                 data[SUIT_TIMER_KEY] = data[SUIT_TIMER_KEY] + 1
                 if data[SUIT_TIMER_KEY] % 60 == 0 then
-                    print("[OlloSuit] boost state ongoing..." .. tostring(data[SUIT_TIMER_KEY] / 60) .. " Sec")
+                    --print("[OlloSuit] boost state ongoing..." .. tostring(data[SUIT_TIMER_KEY] / 60) .. " Sec")
                 end
                 if data[SUIT_TIMER_KEY] >= DAMAGE_DURATION then
-                    print("[OlloSuit] boost → nerf state transition!")
+                    --print("[OlloSuit] boost → nerf state transition!")
                     data[SUIT_STATE_KEY] = "nerf"
                 end
             end
 
             -- 상태 변화 시점에만 캐시 리셋
             if data[SUIT_STATE_KEY] ~= data[SUIT_PREV_STATE_KEY] then
-                print("[OlloSuit] [OlloSuit] Damage cache evaluation! State: ", data[SUIT_PREV_STATE_KEY], "now:", data[SUIT_STATE_KEY])
+                --print("[OlloSuit] [OlloSuit] Damage cache evaluation! State: ", data[SUIT_PREV_STATE_KEY], "now:", data[SUIT_STATE_KEY])
                 player:AddCacheFlags(CacheFlag.CACHE_DAMAGE)
                 player:EvaluateItems()
                 data[SUIT_PREV_STATE_KEY] = data[SUIT_STATE_KEY]
@@ -49,7 +49,7 @@ return function(mod, id)
         if player:HasCollectible(id) then
             local state = player:GetData()[SUIT_STATE_KEY] or "boost"
             if cacheFlag == CacheFlag.CACHE_DAMAGE then
-                print("[OlloSuit] Damage cache evaluation! State:", state, "Damage was:", player.Damage)
+                --print("[OlloSuit] Damage cache evaluation! State:", state, "Damage was:", player.Damage)
                 if state == "boost" then
                     player.Damage = player.Damage + 3
                     --print("[OlloSuit] boost: Damage +3 applied →", player.Damage)
@@ -65,7 +65,9 @@ return function(mod, id)
     if EID then
         EID:addCollectible(
             id,
-            "먹는 순간 2분 동안 데미지 +3#2분 후 데미지 +0.3#최대 체력 +1 (채워짐)",
+            "#↑ 먹는 순간 2분 동안 공격력 +3이 증가합니다."..
+            "# 2분 후 {{DamageSmall}} 효과가 사라지고 공격력 +0.3이 증가합니다"..
+            "#{{Heart}} 최대 체력 +1",
             "Ollo Suit"
         )
     end
