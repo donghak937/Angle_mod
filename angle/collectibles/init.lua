@@ -1,7 +1,7 @@
-local triple_homing = require("customs.triple_homing")
+local ollo_head = require("angle.collectibles.customs.ollo_head")
 
 local function register_collectibles(mod, ids)
-    triple_homing(mod, ids.triple_homing)
+    ollo_head(mod, ids.ollo_head)
     -- 필요시 다른 아이템도 여기에 추가
 end
 

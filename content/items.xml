@@ -1,10 +1,10 @@
 <items gfxroot = "gfx/items/" version = "1">
   <passive 
   id = "1" 
-  name = "Triple Homing Tear" 
-  gfx="tripletear.png" 
-  description="공격력 배수 3배 + 유도" 
-  quality="4" 
+  name = "Ollo Head" 
+  gfx="Ollohead.png" 
+  description="Homing Shot + Shot Speed Up" 
+  quality="3" 
   cache = "damage"/>
 </items>
 

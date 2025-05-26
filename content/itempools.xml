@@ -1,5 +1,5 @@
 <ItemPools>
     <Pool Name= "treasure">
-        <Item Name = "Triple Homing Tear" weight = "1" DecreaseBy = "1" RemoveOn = "0.1" />
+        <Item Name = "Ollo Head" weight = "1" DecreaseBy = "1" RemoveOn = "0.1" />
     </Pool>
 </ItemPools>

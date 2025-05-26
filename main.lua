@@ -1,7 +1,7 @@
 local mod = RegisterMod("My Mod", 1)
 
 local ids = {
-    triple_homing = Isaac.GetItemIdByName("Triple Homing Tear"),
+    ollo_head = Isaac.GetItemIdByName("Ollo Head"),
     -- 필요시 다른 아이템 id도 같이!
 }
 
