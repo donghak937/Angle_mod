@@ -25,7 +25,7 @@
 
 ---
 
-| **이미지** |![mininick](/resources/gfx/items/collectibles/nick.png)|
+| **이미지** |![mini_nick](/resources/gfx/items/collectibles/Nick.png)|
 | ------- | :--------------------------------------------------------------------------------------: |
 | **ID**  | 735 |
 | **등급**  | 1등급 |
@@ -33,3 +33,13 @@
 
 **설명**  
 - 공격력 1.5의 눈물을 발사한다. 공격키를 빠르게 누를 수록 공격이 빠르게 나간다.
+
+| **이미지** |![carl's weapon](/resources/gfx/items/collectibles/Carl_Active.png)|
+| ------- | :--------------------------------------------------------------------------------------: |
+| **ID**  | 736 |
+| **등급**  | 4등급 |
+| **효과**  | Throws a pickaxe in the direction the user is facing.
+Deals 10 damage plus the user's attack power as additional damage.|
+
+**설명**  
+- 사용자가 바라보는 방향에 곡괭이를 던진다. 공격력 10 + 사용자의 공격력의 피해을 입힌다.

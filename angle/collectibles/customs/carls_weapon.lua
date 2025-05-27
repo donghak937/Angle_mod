@@ -127,6 +127,9 @@ return function(mod, id)
             or player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_OF_THE_NIGHT)
             -- 위에 원하는 관통 아이템을 추가로 이어붙이면 됨!
 
+        -- 부메랑이 플레이어의 슬롯 정보를 기억(돌아올 때 쿨 완충용)
+        data.ChargeSlot = player:GetData().carlActiveSlot or ActiveSlot.SLOT_PRIMARY
+
         print("[Debug] Carl's Boomerang spawned! CanPierceTerrain: " .. tostring(data.CanPierceTerrain))
     end
 
@@ -177,16 +180,20 @@ return function(mod, id)
                 data.Returning = true
             end
         else
-            -- 리턴 동작 기존대로
+            -- 리턴 동작
             local toPlayer = (player.Position - effect.Position):Normalized()
             effect.Velocity = toPlayer * RETURN_SPEED
             if (effect.Position - player.Position):Length() < 15 then
+                -- ✅ 부메랑이 돌아오면 쿨 완충!
+                local slot = data.ChargeSlot or ActiveSlot.SLOT_PRIMARY
+                player:SetActiveCharge(Isaac.GetItemConfig():GetCollectible(id).MaxCharges, slot)
+                -- 또는 player:FullCharge(slot)
                 effect:Remove()
                 return
             end
         end
 
-        -- 적 피격, 상태, 로그 등 기존대로(생략 안 함)
+        -- 적 피격, 상태, 로그 등 기존대로
         for _, ent in ipairs(Isaac.FindInRadius(effect.Position, 24, EntityPartition.ENEMY)) do
             if ent:IsVulnerableEnemy() and not data.HitEnemies[ent.InitSeed] then
                 ent:TakeDamage(data.Damage, DamageFlag.DAMAGE_NO_PENALTIES, EntityRef(player), 0)
