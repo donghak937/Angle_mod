@@ -120,17 +120,24 @@ return function(mod, id)
         data.HitEnemies = {}
         data.AnimInit = false
 
+        local ptype = player:GetPlayerType()
         -- 관통 아이템 보유 체크 (원하는 것만 추가)
-        data.CanPierceTerrain =
-            player:HasCollectible(CollectibleType.COLLECTIBLE_SPOON_BENDER)
-            or player:HasCollectible(CollectibleType.COLLECTIBLE_TRANSCENDENCE)
-            or player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_OF_THE_NIGHT)
+       data.CanPierceTerrain =
+            player:HasCollectible(CollectibleType.COLLECTIBLE_DEAD_DOVE)         -- Dead Dove (Flight + Spectral)
+            or player:HasCollectible(CollectibleType.COLLECTIBLE_DEAD_ONION)     -- Dead Onion (Piercing + Spectral)
+            or player:HasCollectible(CollectibleType.COLLECTIBLE_OUIJA_BOARD)    -- Ouija Board (Spectral)
+            or player:HasCollectible(CollectibleType.COLLECTIBLE_SPIRIT_OF_THE_NIGHT) -- Spirit of the Night (Spectral + Flight)
+            or player:HasCollectible(CollectibleType.COLLECTIBLE_TINY_PLANET)    -- Tiny Planet (Spectral)
+            or player:HasCollectible(CollectibleType.COLLECTIBLE_CONTINUUM)      -- Continuum (Spectral + wall travel)
+            or player:HasCollectible(CollectibleType.COLLECTIBLE_PUPULA_DUPLEX)  -- Pupula Duplex (Spectral + wide)
+            or player:HasCollectible(CollectibleType.COLLECTIBLE_THE_WIZ)        -- The Wiz (Spectral)
+            or (ptype == 10)                 -- Ghost form lost
+            or (ptype == 31)
+
             -- 위에 원하는 관통 아이템을 추가로 이어붙이면 됨!
 
         -- 부메랑이 플레이어의 슬롯 정보를 기억(돌아올 때 쿨 완충용)
         data.ChargeSlot = player:GetData().carlActiveSlot or ActiveSlot.SLOT_PRIMARY
-
-        print("[Debug] Carl's Boomerang spawned! CanPierceTerrain: " .. tostring(data.CanPierceTerrain))
     end
 
     --------------------------------------------------------
@@ -159,6 +166,18 @@ return function(mod, id)
             sprite:Play("Attack", true)
         end
 
+
+        local OBSTACLE_TYPES = {
+            [GridEntityType.GRID_ROCK] = true,
+            [GridEntityType.GRID_ROCKB] = true,
+            [GridEntityType.GRID_ROCKT] = true,
+            [GridEntityType.GRID_ROCK_SS] = true,
+            [GridEntityType.GRID_POOP] = true,
+            [GridEntityType.GRID_TNT] = true,
+            [GridEntityType.GRID_STATUE] = true,
+            [GridEntityType.GRID_PILLAR] = true,
+            [GridEntityType.GRID_LOCK] = true,
+        }
         -- 관통 여부에 따라 장애물 충돌 체크 분기
         if not data.Returning then
             effect.Velocity = Vector.FromAngle(data.Angle) * SPEED
@@ -169,9 +188,10 @@ return function(mod, id)
 
             -- 장애물 체크: 관통 상태 아닐 때만 돌(rock), 구멍(pit) 등 부딪힘 판정
             local hitObstacle = false
+            local hitObstacle = false
             if not data.CanPierceTerrain then
                 local grid = room:GetGridEntityFromPos(effect.Position)
-                if grid and (grid:GetType() == GridEntityType.GRID_ROCK or grid:GetType() == GridEntityType.GRID_PIT) then
+                if grid and OBSTACLE_TYPES[grid:GetType()] then
                     hitObstacle = true
                 end
             end
@@ -209,8 +229,8 @@ return function(mod, id)
     if EID then
         EID:addCollectible(
             collectible,
-            "#사용시 공격 방향으로 곡괭이를 던집니다."
-            .. "#곡괭이는 고정 공격력 10 사용자의 공격력을 입힙니다.",
+            "#사용 시 공격 방향으로 공격력 + 10의 곡괭이를 던집니다."
+            .. "#지형관통 아이템이 있을 시, 관통합니다.",
             "Carl's Weapon"
         )
     end
