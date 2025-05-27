@@ -18,7 +18,9 @@ return function(mod, id)
     function mod:MiniNickInit(fam)
         fam:AddToFollowers()
         fam.FireCooldown = 0
-        fam:GetData().ShootAnimTimer = 0
+        local data = fam:GetData()
+        data.ShootAnimTimer = 0
+        data.LastShotDir = Vector(0, 1)
     end
     mod:AddCallback(ModCallbacks.MC_FAMILIAR_INIT, mod.MiniNickInit, Isaac.GetEntityVariantByName("Mini Nick"))
 
@@ -47,6 +49,19 @@ return function(mod, id)
         [Direction.DOWN] = "FloatShootDown"
     }
 
+    local function dirToAnimDir(vec)
+        local angle = vec:GetAngleDegrees()
+        if angle > -45 and angle <= 45 then
+            return Direction.RIGHT
+        elseif angle > 45 and angle <= 135 then
+            return Direction.DOWN
+        elseif angle <= -45 and angle > -135 then
+            return Direction.UP
+        else
+            return Direction.LEFT
+        end
+    end
+
     -- familiar 업데이트
     function mod:MiniNickUpdate(fam)
         fam:FollowParent()
@@ -56,6 +71,7 @@ return function(mod, id)
 
         local data = fam:GetData()
         data.ShootAnimTimer = data.ShootAnimTimer or 0
+        data.LastShotDir = data.LastShotDir or Vector(0, 1)
 
         local fireVec = Vector(0, 1)
         local shootAnim, idleAnim
@@ -73,19 +89,19 @@ return function(mod, id)
                 useAutoAim = true
                 -- 애니메이션 방향 결정
                 local angle = fireVec:GetAngleDegrees()
-                if angle > -45 and angle <= 45 then -- 오른쪽
+                if angle > -45 and angle <= 45 then
                     shootAnim = "FloatShootSide"
                     idleAnim = "FloatSide"
                     animFlipX = false
-                elseif angle > 45 and angle <= 135 then -- 아래
+                elseif angle > 45 and angle <= 135 then
                     shootAnim = "FloatShootDown"
                     idleAnim = "FloatDown"
                     animFlipX = false
-                elseif angle <= -45 and angle > -135 then -- 위
+                elseif angle <= -45 and angle > -135 then
                     shootAnim = "FloatShootUp"
                     idleAnim = "FloatUp"
                     animFlipX = false
-                else -- 왼쪽
+                else
                     shootAnim = "FloatShootSide"
                     idleAnim = "FloatSide"
                     animFlipX = true
@@ -93,7 +109,6 @@ return function(mod, id)
             end
         end
 
-        -- 평소엔 플레이어 발사 방향
         if not useAutoAim then
             if player_fire_direction == Direction.LEFT then
                 fireVec = Vector(-1, 0)
@@ -123,18 +138,18 @@ return function(mod, id)
             end
         end
 
+        -- 눈물 쏘는 쪽 방향 기억
         sprite.FlipX = animFlipX
 
-        -- 실제로 쏘는 조건: 플레이어가 발사 중일 때만!
         if player_fire_direction ~= Direction.NO_DIRECTION then
-            -- 눈물 발사 직후 일정시간(예: 15프레임)만 슛 애니, 그 후 idle로 전환
             if fam.FireCooldown <= 0 then
                 local tear = fam:FireProjectile(fireVec)
                 if tear then
                     tear.CollisionDamage = 1.5
                 end
-                fam.FireCooldown = 30   -- 30프레임 쿨타임 (1초)
-                data.ShootAnimTimer = 15 -- 15프레임(0.5초)만 슛 애니
+                fam.FireCooldown = 30
+                data.ShootAnimTimer = 15
+                data.LastShotDir = fireVec -- 방향 저장!
             else
                 fam.FireCooldown = fam.FireCooldown - 1
             end
@@ -145,13 +160,21 @@ return function(mod, id)
                 end
                 data.ShootAnimTimer = data.ShootAnimTimer - 1
             else
-                if not sprite:IsPlaying(idleAnim) then
-                    sprite:Play(idleAnim, false)
+                -- Idle: 마지막 쏜 방향 기준
+                local lastDir = dirToAnimDir(data.LastShotDir)
+                local lastIdleAnim = DIRECTION_FLOAT_ANIM[lastDir]
+                sprite.FlipX = (lastDir == Direction.LEFT)
+                if not sprite:IsPlaying(lastIdleAnim) then
+                    sprite:Play(lastIdleAnim, false)
                 end
             end
         else
-            if not sprite:IsPlaying(idleAnim) then
-                sprite:Play(idleAnim, false)
+            -- Idle: 마지막 쏜 방향 기준
+            local lastDir = dirToAnimDir(data.LastShotDir)
+            local lastIdleAnim = DIRECTION_FLOAT_ANIM[lastDir]
+            sprite.FlipX = (lastDir == Direction.LEFT)
+            if not sprite:IsPlaying(lastIdleAnim) then
+                sprite:Play(lastIdleAnim, false)
             end
             fam.FireCooldown = 0
             data.ShootAnimTimer = 0
@@ -163,7 +186,7 @@ return function(mod, id)
         EID:addCollectible(
             id,
             "#공격방향으로 공격력 1.5의 눈물을 발사합니다."..
-            "#↑ 공격키를 빠르게 누를수록 빠르게 발사합니다."
+            "#↑ 공격키를 빠르게 누를수록 빠르게 발사합니다"
         )
     end
 
