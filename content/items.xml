@@ -20,5 +20,14 @@
   quality="1" 
   cache = "familiar"
   tags = "baby offensive summonable monstermanual"/>
+
+  <active
+    name="Carl's Weapon"
+    gfx = "Carl_Active.png"
+    description="Temporarily boosts your stats"
+    type="active"
+    quality="3"
+    maxcharges="30"
+    chargetype="timed" />
 </items>
 
