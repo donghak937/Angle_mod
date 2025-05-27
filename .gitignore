@@ -28,7 +28,7 @@ luac.out
 *.lo
 *.def
 *.exp
-
+*.vscode
 # Shared objects (inc. Windows DLLs)
 *.dll
 *.so

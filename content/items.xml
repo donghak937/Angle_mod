@@ -1,6 +1,5 @@
 <items gfxroot = "gfx/items/" version = "1">
   <passive 
-  id = "800" 
   name = "Ollo Head" 
   gfx="Ollohead.png" 
   description="I don't feel so good." 
@@ -8,11 +7,18 @@
   cache = "damage"/>
 
   <passive 
-  id = "801" 
   name = "Ollo Suit" 
   gfx="Ollosuit.png" 
   description="Temporate power!" 
   quality="1" 
   cache = "damage"/>
+
+  <familiar 
+  name = "Mini Nick" 
+  gfx="Nick.png" 
+  description="Nick appeared!" 
+  quality="1" 
+  cache = "familiar"
+  tags = "baby offensive summonable monstermanual"/>
 </items>
 

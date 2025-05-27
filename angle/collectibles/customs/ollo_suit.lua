@@ -1,13 +1,12 @@
 local SUIT_TIMER_KEY = "OlloSuit_Timer"
 local SUIT_STATE_KEY = "OlloSuit_State"
 local SUIT_PREV_STATE_KEY = "OlloSuit_PrevState"
-local DAMAGE_DURATION = 60 * 120
-
+local DAMAGE_DURATION = 30 * 120
+local getIsaacDamageMultiplier = require("angle.collectibles.customs.mult")
 
 return function(mod, id)
     function mod:OlloSuitPickup(player)
         if player:HasCollectible(id) and not player:GetData().olloSuitPicked then
-            --print("[OlloSuit] First time pickup: Max HP up!")
             player:AddMaxHearts(2)
             player:AddHearts(2)
             player:GetData().olloSuitPicked = true
@@ -26,17 +25,13 @@ return function(mod, id)
             if data[SUIT_STATE_KEY] == "boost" then
                 data[SUIT_TIMER_KEY] = data[SUIT_TIMER_KEY] + 1
                 if data[SUIT_TIMER_KEY] % 60 == 0 then
-                    --print("[OlloSuit] boost state ongoing..." .. tostring(data[SUIT_TIMER_KEY] / 60) .. " Sec")
                 end
                 if data[SUIT_TIMER_KEY] >= DAMAGE_DURATION then
-                    --print("[OlloSuit] boost → nerf state transition!")
                     data[SUIT_STATE_KEY] = "nerf"
                 end
             end
 
-            -- 상태 변화 시점에만 캐시 리셋
             if data[SUIT_STATE_KEY] ~= data[SUIT_PREV_STATE_KEY] then
-                --print("[OlloSuit] [OlloSuit] Damage cache evaluation! State: ", data[SUIT_PREV_STATE_KEY], "now:", data[SUIT_STATE_KEY])
                 player:AddCacheFlags(CacheFlag.CACHE_DAMAGE)
                 player:EvaluateItems()
                 data[SUIT_PREV_STATE_KEY] = data[SUIT_STATE_KEY]
@@ -48,14 +43,13 @@ return function(mod, id)
     function mod:OlloSuitCache(player, cacheFlag)
         if player:HasCollectible(id) then
             local state = player:GetData()[SUIT_STATE_KEY] or "boost"
+            
             if cacheFlag == CacheFlag.CACHE_DAMAGE then
-                --print("[OlloSuit] Damage cache evaluation! State:", state, "Damage was:", player.Damage)
+                local mult = getIsaacDamageMultiplier(player)
                 if state == "boost" then
-                    player.Damage = player.Damage + 3
-                    --print("[OlloSuit] boost: Damage +3 applied →", player.Damage)
+                    player.Damage = player.Damage + 3 * mult
                 else
-                    player.Damage = player.Damage + 0.3
-                    --print("[OlloSuit] nerf: Damage +0.3 applied →", player.Damage)
+                    player.Damage = player.Damage + 0.3 * mult
                 end
             end
         end
