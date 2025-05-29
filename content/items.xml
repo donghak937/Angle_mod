@@ -24,10 +24,17 @@
   <active
     name="Carl's Weapon"
     gfx = "Carl_Active.png"
-    description="Temporarily boosts your stats"
+    description="Carl is my name, geology is my game!"
     type="active"
     quality="3"
     maxcharges="30"
     chargetype="timed" />
+
+    <passive 
+      name = "Melody's Song" 
+      gfx="melody_song.png" 
+      description="Harmony brings melody." 
+      quality="3" 
+      cache = "damage"/>
 </items>
 

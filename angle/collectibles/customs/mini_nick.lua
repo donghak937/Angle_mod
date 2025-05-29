@@ -186,7 +186,8 @@ return function(mod, id)
         EID:addCollectible(
             id,
             "#공격방향으로 공격력 1.5의 눈물을 발사합니다."..
-            "#↑ 공격키를 빠르게 누를수록 빠르게 발사합니다"
+            "#↑ 공격키를 빠르게 누를수록 빠르게 발사합니다",
+            "Mini Nick"
         )
     end
 

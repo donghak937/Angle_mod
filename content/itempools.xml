@@ -2,7 +2,8 @@
     <Pool Name= "treasure">
         <Item Name = "Ollo Head" weight = "1" DecreaseBy = "1" RemoveOn = "0.1" />
         <Item Name = "Ollo Suit" weight = "1" DecreaseBy = "1" RemoveOn = "0.1" />
-        <Item Name="Mini Nick" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+        <Item Name = "Mini Nick" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
+        <Item Name = "Melody's Song" Weight="1" DecreaseBy="1" RemoveOn="0.1"/>
     </Pool>
 
     <Pool Name = "shop">
