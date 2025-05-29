@@ -38,8 +38,17 @@
 | ------- | :--------------------------------------------------------------------------------------: |
 | **ID**  | 736 |
 | **등급**  | 4등급 |
-| **효과**  | Throws a pickaxe in the direction the user is facing.
-Deals 10 damage plus the user's attack power as additional damage.|
+| **효과**  | Throws a pickaxe in the direction the user is facing.Deals 10 damage plus the user's attack power as additional damage. If a player has fire items, it spawns creeps that deals burn damage.|
 
 **설명**  
-- 사용자가 바라보는 방향에 곡괭이를 던진다. 공격력 10 + 사용자의 공격력의 피해을 입힌다.
+- 사용자가 바라보는 방향에 곡괭이를 던진다. 공격력 10 + 사용자의 공격력의 피해을 입힌다. 불 관련 아이템이 있으면 화상 공격을 입히는 장판을 깐다.
+---
+
+| **이미지** |![Melody's song](/resources/gfx/effects/melody_song.png)|
+| ------- | :--------------------------------------------------------------------------------------: |
+| **ID**  | 737 |
+| **등급**  | 3등급 |
+| **효과**  | When you hit an enemy with a tear, a musical note will orbit you dealing damage equal to 2x your damage.The note disappears after 6 seconds. |
+
+**설명**  
+- 적을 눈물로 맞추면 캐릭터 공격력 2배의 음표가 공전합니다. 음표는 6초뒤에 사라집니다
