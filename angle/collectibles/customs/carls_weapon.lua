@@ -1,6 +1,8 @@
 return function(mod, id)
     local CARL_BOOMERANG_VARIANT = 8654
     local collectible = id
+    local NO_DAMAGE_CREEP = 923
+    
 
     --------------------
     -- Ready 취소 함수
@@ -188,7 +190,6 @@ return function(mod, id)
 
             -- 장애물 체크: 관통 상태 아닐 때만 돌(rock), 구멍(pit) 등 부딪힘 판정
             local hitObstacle = false
-            local hitObstacle = false
             if not data.CanPierceTerrain then
                 local grid = room:GetGridEntityFromPos(effect.Position)
                 if grid and OBSTACLE_TYPES[grid:GetType()] then
@@ -213,6 +214,52 @@ return function(mod, id)
             end
         end
 
+        mod._creepTimeouts = mod._creepTimeouts or {}
+
+        function mod:NoDamageCreepTimeout(effect)
+            if effect.Variant == NO_DAMAGE_CREEP then
+                -- 2초(60프레임) 뒤 사라짐
+                if effect.FrameCount >= 15 then
+                    effect:Remove()
+                    return
+                end
+
+                -- 밟고 있는 적 모두에게 계속 화상 부여 (중복 적용 가능, 타이머 연장됨)
+                for _, enemy in ipairs(Isaac.FindInRadius(effect.Position, 40, EntityPartition.ENEMY)) do
+                    if enemy:IsVulnerableEnemy() and not enemy:HasEntityFlags(EntityFlag.FLAG_FRIENDLY) then
+                        enemy:AddBurn(EntityRef(effect), 45, 2.5) -- 1.5초(45프레임) 동안 초당 2.5 데미지
+                    end
+                end
+            end
+        end
+
+
+        mod:AddCallback(ModCallbacks.MC_POST_EFFECT_UPDATE, mod.NoDamageCreepTimeout, NO_DAMAGE_CREEP)
+
+
+
+        local hasFireMind = player:HasCollectible(CollectibleType.COLLECTIBLE_FIRE_MIND)
+        local hasALighter = player:HasTrinket(TrinketType.TRINKET_LIGHTER)
+
+        -- 부메랑의 creep 쿨다운 관리
+        data.creepCooldown = data.creepCooldown or 0
+
+        if (hasALighter or hasFireMind) and data.creepCooldown <= 0 then
+            local idx = math.random(1, 5)
+            local animName = "SmallBlood0" .. tostring(idx)
+            local creep = Isaac.Spawn(EntityType.ENTITY_EFFECT, NO_DAMAGE_CREEP, 0, effect.Position, Vector.Zero, player):ToEffect()
+            creep:GetSprite():Play(animName, true)
+            data.creepCooldown = 2   -- "2프레임"마다 1개씩 생성 간격
+        end
+
+        if data.creepCooldown > 0 then
+            data.creepCooldown = data.creepCooldown - 1
+        end
+
+
+
+
+
         -- 적 피격, 상태, 로그 등 기존대로
         for _, ent in ipairs(Isaac.FindInRadius(effect.Position, 24, EntityPartition.ENEMY)) do
             if ent:IsVulnerableEnemy() and not data.HitEnemies[ent.InitSeed] then
@@ -230,7 +277,8 @@ return function(mod, id)
         EID:addCollectible(
             collectible,
             "#사용 시 공격 방향으로 공격력 + 10의 곡괭이를 던집니다."
-            .. "#지형관통 아이템이 있을 시, 관통합니다.",
+            .. "#지형관통 아이템이 있을 시, 관통합니다."
+            .. "#{{Collectible257}}나 {{Trinket135}}가 있으면 화상 장판을 깝니다.",
             "Carl's Weapon"
         )
     end
