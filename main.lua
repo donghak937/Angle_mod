@@ -7,6 +7,7 @@ angle.Items = {
     mini_nick = Isaac.GetItemIdByName("Mini Nick"),
     carls_weapon = Isaac.GetItemIdByName("Carl's Weapon"),
     melody_song = Isaac.GetItemIdByName("Melody's Song"),
+    colt_gun = Isaac.GetItemIdByName("Colt Gun"),
     -- 다른 아이템도 여기에 추가!
 }
 

@@ -1,3 +1,6 @@
+local getIsaacTearsMultiplier = require("angle.collectibles.customs.tearsMult")
+
+
 return function(mod, id)
     -- 아이템 효과 등록
     function mod:OlloHeadCache(player, cacheFlag)

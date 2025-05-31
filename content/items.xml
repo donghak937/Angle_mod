@@ -36,5 +36,12 @@
       description="Harmony brings melody." 
       quality="3" 
       cache = "damage"/>
+
+      <passive 
+      name = "Colt Gun" 
+      gfx="colt_gun.png" 
+      description="colt's gun." 
+      quality="3" 
+      cache = "damage"/>
 </items>
 

@@ -2,7 +2,7 @@ local SUIT_TIMER_KEY = "OlloSuit_Timer"
 local SUIT_STATE_KEY = "OlloSuit_State"
 local SUIT_PREV_STATE_KEY = "OlloSuit_PrevState"
 local DAMAGE_DURATION = 30 * 120
-local getIsaacDamageMultiplier = require("angle.collectibles.customs.mult")
+local getIsaacDamageMultiplier = require("angle.collectibles.customs.damageMult")
 
 return function(mod, id)
     function mod:OlloSuitPickup(player)
