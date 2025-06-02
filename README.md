@@ -50,5 +50,16 @@
 | **등급**  | 3등급 |
 | **효과**  | When you hit an enemy with a tear, a musical note will orbit you dealing damage equal to 2x your damage.The note disappears after 6 seconds. |
 
+---
+
+**설명**  
+- 적을 눈물로 맞추면 캐릭터 공격력 2배의 음표가 공전합니다. 음표는 6초뒤에 사라집니다
+
+| **이미지** |![Colt's Gun](/resources/gfx/items/collectibles/Colt_gun.png)|
+| ------- | :--------------------------------------------------------------------------------------: |
+| **ID**  | 738 |
+| **등급**  | 3등급 |
+| **효과**  | When you hit an enemy with a tear, a musical note will orbit you dealing damage equal to 2x your damage.The note disappears after 6 seconds. |
+
 **설명**  
 - 적을 눈물로 맞추면 캐릭터 공격력 2배의 음표가 공전합니다. 음표는 6초뒤에 사라집니다
